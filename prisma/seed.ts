@@ -29,7 +29,7 @@ async function main() {
     },
   });
 
-  const article1 = await prisma.article.create({
+  const product1 = await prisma.product.create({
     data: {
       name: 'Café moka',
       description: 'Café con chocolate',
@@ -66,7 +66,7 @@ async function main() {
     },
   });
 
-  const article2 = await prisma.article.create({
+  const product2 = await prisma.product.create({
     data: {
       name: 'Soda italiana',
       description: 'Agua mineral con jarabe',
@@ -95,7 +95,7 @@ async function main() {
     },
   });
 
-  const article3 = await prisma.article.create({
+  const product3 = await prisma.product.create({
     data: {
       name: 'Chilaquiles',
       description: 'Chilaquiles, just chilaquiles con pollo',
@@ -129,9 +129,9 @@ async function main() {
     category2,
     category3,
     store1,
-    article1,
-    article2,
-    article3,
+    product1,
+    product2,
+    product3,
   });
 }
 
