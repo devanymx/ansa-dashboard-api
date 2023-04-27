@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id          Int                    @id @default(autoincrement())
+  name        String
+  description String?
+  photo_url   String?
+  price       Float
+  categories  CategoriesOnArticles[]
+  tickets     ArticlesOnTicket[]
+  store       Store                  @relation(fields: [storeId], references: [id])
+  storeId     Int
+  active      Boolean                @default(true)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
+}
+
+model Category {
+  id        Int                    @id @default(autoincrement())
+  name      String
+  articles  CategoriesOnArticles[]
+  active    Boolean                @default(true)
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+}
+
+model Store {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String
+  location    String?
+  description String?
+  articles    Article[]
+  tickets     Ticket[]
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model CategoriesOnArticles {
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  article    Article  @relation(fields: [articleId], references: [id])
+  articleId  Int
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([articleId, categoryId])
+}
+
+model Ticket {
+  id         Int                @unique @default(autoincrement())
+  store      Store              @relation(fields: [storeId], references: [id])
+  storeId    Int
+  articles   ArticlesOnTicket[]
+  totalPrice Float
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+}
+
+model ArticlesOnTicket {
+  ticket    Ticket  @relation(fields: [ticketId], references: [id])
+  ticketId  Int
+  article   Article @relation(fields: [articleId], references: [id])
+  articleId Int
+  quantity  Int
+  price     Float
+
+  @@id([ticketId, articleId])
+}
