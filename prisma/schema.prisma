@@ -11,40 +11,46 @@ datasource db {
 }
 
 model Product {
-  id          Int                    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   description String?
   photo_url   String?
   price       Float
-  categories  CategoriesOnProducts[]
-  tickets     ProductsOnTicket[]
-  store       Store                  @relation(fields: [storeId], references: [id])
-  storeId     Int
-  active      Boolean                @default(true)
-  createdAt   DateTime               @default(now())
-  updatedAt   DateTime               @updatedAt
+  active      Boolean @default(true)
+
+  categories CategoriesOnProducts[]
+  tickets    ProductsOnTicket[]
+  store      Store                  @relation(fields: [storeId], references: [id])
+  storeId    Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
-  id        Int                    @id @default(autoincrement())
-  name      String
-  products  CategoriesOnProducts[]
-  active    Boolean                @default(true)
-  createdAt DateTime               @default(now())
-  updatedAt DateTime               @updatedAt
+  id     Int     @id @default(autoincrement())
+  name   String
+  active Boolean @default(true)
+
+  products CategoriesOnProducts[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Store {
-  id          Int       @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   slug        String
   location    String?
   description String?
-  products    Product[]
-  tickets     Ticket[]
-  active      Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  active      Boolean @default(true)
+
+  products Product[]
+  tickets  Ticket[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model CategoriesOnProducts {
@@ -59,22 +65,25 @@ model CategoriesOnProducts {
 }
 
 model Ticket {
-  id         Int                @unique @default(autoincrement())
-  store      Store              @relation(fields: [storeId], references: [id])
+  id         Int   @unique @default(autoincrement())
+  store      Store @relation(fields: [storeId], references: [id])
   storeId    Int
-  products   ProductsOnTicket[]
   totalPrice Float
-  createdAt  DateTime           @default(now())
-  updatedAt  DateTime           @updatedAt
+
+  products ProductsOnTicket[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ProductsOnTicket {
+  quantity Int
+  price    Float
+
   ticket    Ticket  @relation(fields: [ticketId], references: [id])
   ticketId  Int
   product   Product @relation(fields: [productId], references: [id])
   productId Int
-  quantity  Int
-  price     Float
 
   @@id([ticketId, productId])
 }
