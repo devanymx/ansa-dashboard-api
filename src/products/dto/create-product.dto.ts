@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Store } from 'src/stores/entities/store.entity';
+import { Category } from '@prisma/client';
 
 export class CreateProductDto {
   @ApiProperty()
@@ -17,6 +17,9 @@ export class CreateProductDto {
   @ApiProperty({ required: false, default: true })
   active = true;
 
-  @ApiProperty({ type: Store })
-  store: Store;
+  @ApiProperty()
+  storeId: number;
+
+  @ApiProperty()
+  categories: [];
 }

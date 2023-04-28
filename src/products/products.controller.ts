@@ -20,8 +20,8 @@ export class ProductsController {
 
   @Post()
   @ApiCreatedResponse({ type: Product })
-  async create(@Body() createProductDto: CreateProductDto) {
-    return new Product(await this.productsService.create(createProductDto));
+  create(@Body() createProductDto: CreateProductDto) {
+    return this.productsService.create(createProductDto);
   }
 
   @Get()

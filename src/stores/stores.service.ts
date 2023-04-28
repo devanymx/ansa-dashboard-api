@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { ApiTags } from '@nestjs/swagger';
 
 @Injectable()
 export class StoresService {
@@ -25,5 +24,26 @@ export class StoresService {
 
   remove(id: number) {
     return this.prisma.store.delete({ where: { id } });
+  }
+
+  findAllProductsOfStore(id: number) {
+    return this.prisma.store.findFirst({
+      where: { id },
+      include: {
+        products: {
+          include: {
+            categories: {
+              select: {
+                category: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
   }
 }
