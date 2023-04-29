@@ -7,10 +7,18 @@ import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { StoresModule } from './stores/stores.module';
 import { TicketsModule } from './tickets/tickets.module';
+import { FirebaseAuthStrategy } from './auth/firebase-auth.strategy';
 
 @Module({
-  imports: [PrismaModule, ConfigModule.forRoot(), ProductsModule, CategoriesModule, StoresModule, TicketsModule],
+  imports: [
+    PrismaModule,
+    ConfigModule.forRoot(),
+    ProductsModule,
+    CategoriesModule,
+    StoresModule,
+    TicketsModule,
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, FirebaseAuthStrategy],
 })
 export class AppModule {}
